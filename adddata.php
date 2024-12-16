@@ -4,10 +4,10 @@
 
         $name = $_POST['name'];
         $grade = $_POST['grade'];
-        $marks = $_POST['marks'];
+        $marks = $_POST['mark'];
 
-        if($name != "" && $grade != "" && $marks != "" ){
-            $sql = "INSERT INTO results (`name`, `class`, `marks`) VALUES ('$name', '$grade', $marks)";
+        if($name != "" && $grade != "" && $mark != "" ){
+            $sql = "INSERT INTO results (`name`, `class`, `mark`) VALUES ('$name', '$grade', $mark)";
             if (mysqli_query($conn, $sql)) {
                 header("location: index.php");
             } else {
