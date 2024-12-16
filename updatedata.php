@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php
-    require_once "conn.php";
-    if(isset($_POST["name"]) && isset($_POST["grade"]) && isset($_POST["marks"])){
-        $name = $_POST['name'];
-        $grade = $_POST['grade'];
-        $marks = $_POST['marks'];
-        $sql = "UPDATE results SET `name`= '$name', `class`= '$grade', `marks`= $marks  WHERE id= ".$_GET["id"];
-        if (mysqli_query($conn, $sql)) {
-            header("location: index.php");
-        } else {
-            echo "Something went wrong. Please try again later.";
-        }
-    }
-?>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,48 +17,76 @@
 
 <body>
     <section>
-        <h1 style="text-align: center;margin: 50px 0;">Update Data</h1>
+        <h1 style="text-align: center;margin: 50px 0;">PHP CRUD operations with MySQL</h1>
         <div class="container">
-            <?php 
-                require_once "conn.php";
-                $sql_query = "SELECT * FROM results WHERE id = ".$_GET["id"];
-                if ($result = $conn ->query($sql_query)) {
-                    while ($row = $result -> fetch_assoc()) { 
-                        $Id = $row['id'];
-                        $Name = $row['name'];
-                        $Grade = $row['class'];
-                        $Marks = $row['marks'];
-            ?>
-                            <form action="updatedata.php?id=<?php echo $Id; ?>" method="post">
-                                <div class="row">
-                                        <div class="form-group col-lg-4">
-                                            <label for="">Student Name</label>
-                                            <input type="text" name="name" id="name" class="form-control" value="<?php echo $Name ?>" required>
-                                        </div>
-                                        <div class="form-group  col-lg-3">
-                                            <label for="">Grade</label>
-                                            <select name="grade" id="grade" class="form-control" required >
-                                                <option value="">Select a Grade</option>
-                                                <option value="grade6" <?php if($Grade == "grade6"){ echo "Selected"; } ?> >Grade 6</option>
-                                                <option value="grade7" <?php if($Grade == "grade7"){ echo "Selected"; } ?> >Grade 7</option>
-                                                <option value="grade8" <?php if($Grade == "grade8"){ echo "Selected"; } ?> >Grade 8</option>
-                                                <option value="grade9" <?php if($Grade == "grade9"){ echo "Selected"; } ?> >Grade 9</option>
-                                                <option value="grade10" <?php if($Grade == "grade10"){ echo "Selected"; } ?> >Grade 10</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            <label for="">Marks</label>
-                                            <input type="text" name="marks" id="marks" class="form-control" value="<?php echo $Marks ?>" required>
-                                        </div>
-                                        <div class="form-group col-lg-2" style="display: grid;align-items:  flex-end;">
-                                            <input type="submit" name="submit" id="submit" class="btn btn-primary" value="Update">
-                                        </div>
-                                </div>
-                            </form>
-            <?php 
-                    }
-                }
-            ?>
+            <form action="adddata.php" method="post">
+               <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="">Student Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group  col-lg-3">
+                        <label for="">Grade</label>
+                        <select name="grade" id="grade" class="form-control" required>
+                            <option value="">Select a Grade</option>
+                            <option value="grade6">Grade 6</option>
+                            <option value="grade7">Grade 7</option>
+                            <option value="grade8">Grade 8</option>
+                            <option value="grade9">Grade 9</option>
+                            <option value="grade10">Grade 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="">Mark</label>
+                        <input type="number" name="mark" id="mark" class="form-control" required>
+                    </div>
+                    <div class="form-group col-lg-2" style="display: grid;align-items:  flex-end;">
+                        <input type="submit" name="submit" id="submit" class="btn btn-primary">
+                    </div>
+               </div>
+            </form>
+        </div>
+    </section>
+    <section style="margin: 50px 0;">
+        <div class="container">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Studen Name</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Mark</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        require_once "conn.php";
+                        $sql_query = "SELECT * FROM results";
+                        if ($result = $conn ->query($sql_query)) {
+                            while ($row = $result -> fetch_assoc()) { 
+                                $Id = $row['id'];
+                                $Name = $row['name'];
+                                $Grade = $row['class'];
+                                $Marks = $row['mark'];
+                    ?>
+                    
+                    <tr class="trow">
+                        <td><?php echo $Id; ?></td>
+                        <td><?php echo $Name; ?></td>
+                        <td><?php echo $Grade; ?></td>
+                        <td><?php echo $Mark; ?></td>
+                        <td><a href="updatedata.php?id=<?php echo $Id; ?>" class="btn btn-primary">Edit</a></td>
+                        <td><a href="deletedata.php?id=<?php echo $Id; ?>" class="btn btn-danger">Delete</a></td>
+                    </tr>
+
+                    <?php
+                            } 
+                        } 
+                    ?>
+                </tbody>
+              </table>
         </div>
     </section>
 </body>
